@@ -37,6 +37,7 @@ export const login = async (req, res, next) => {
     if (!checkPassword)
       return next(errorHandler(401, "email or password incorrect"));
     req.session.user = users[0].email;
+    req.session.userId = users[0].id;
 
     const { password: pass, ...rest } = users[0];
 
