@@ -20,11 +20,15 @@ const Share = () => {
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
-    mutationFn: async (newPost) => {
+    mutationFn: async () => {
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("desc", desc);
       const response = await axios.post(
         "http://localhost:8800/api/post/create",
-        newPost,
+        formData,
         {
+          headers: { "Content-Type": "multipart/form-data" },
           withCredentials: true,
         }
       );
@@ -36,9 +40,9 @@ const Share = () => {
     },
   });
 
-  const handleClick = (e) => {
+  const handleClick = async (e) => {
     e.preventDefault();
-    mutation.mutate({ desc });
+    await mutation.mutate();
     setDesc("");
   };
 
@@ -60,8 +64,8 @@ const Share = () => {
             <input
               type="file"
               id="file"
+              name="file"
               style={{ display: "none" }}
-              value={file}
               onChange={(e) => setFile(e.target.files[0])}
             />
             <label htmlFor="file">

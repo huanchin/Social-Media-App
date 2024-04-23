@@ -1,5 +1,9 @@
 import pool from "../database.js";
 import moment from "moment";
+import multer from "multer";
+
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
 
 export const getPosts = async (req, res, next) => {
   try {
@@ -14,7 +18,13 @@ export const getPosts = async (req, res, next) => {
   }
 };
 
+export const uploadPostImage = upload.single("file");
+
 export const createPost = async (req, res, next) => {
+  console.log("🔥");
+  console.log(req.file);
+  console.log(req.body);
+  console.log("🚀");
   const { desc, img } = req.body;
   try {
     const userId = req.session.userId;
